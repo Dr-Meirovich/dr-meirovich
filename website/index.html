@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ד"ר ערן מאירוביץ' | מומחה לנוירוכירורגיה וצנתורי מוח</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #050a0f;
+            --accent-blue: #3498db;
+            --linkedin-blue: #0077b5;
+            --glass-bg: rgba(10, 25, 47, 0.92);
+            --light-text: #e6f1ff;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            margin: 0; padding: 0; color: var(--light-text); 
+            background-color: var(--primary-dark); line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .page-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('image_43473c.png'); background-size: cover;
+            background-position: center; z-index: -1; filter: brightness(0.35);
+        }
+
+        header { 
+            background: rgba(10, 25, 47, 0.95); padding: 40px 20px; 
+            border-bottom: 3px solid var(--accent-blue); text-align: center;
+        }
+
+        .header-logo {
+            height: 120px; width: auto; border-radius: 50%;
+            background: white; padding: 5px; margin-bottom: 15px;
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.6);
+        }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 15px; position: relative; }
+
+        /* כתבות צפות - תצוגה חכמה */
+        .articles-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
+        
+        .floating-article {
+            background: rgba(52, 152, 219, 0.15); backdrop-filter: blur(12px);
+            border: 1px solid var(--accent-blue); padding: 14px; border-radius: 12px;
+            color: white; text-decoration: none; font-size: 0.85em; font-weight: bold;
+            display: flex; align-items: center; gap: 10px; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        @media (min-width: 1200px) {
+            .articles-bar { display: block; }
+            .floating-article { position: fixed; width: 210px; animation: float 5s infinite ease-in-out; }
+            .article-1 { left: 20px; top: 25%; }
+            .article-2 { right: 20px; top: 40%; animation-delay: 1s; }
+            .article-3 { left: 20px; top: 55%; animation-delay: 2s; }
+        }
+
+        .card { 
+            background: var(--glass-bg); margin-bottom: 35px; border-radius: 24px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            box-shadow: var(--card-shadow); text-align: right; overflow: hidden;
+        }
+
+        .card-header { background: rgba(52, 152, 219, 0.25); padding: 22px; text-align: center; border-bottom: 1px solid rgba(52, 152, 219, 0.3); }
+        .card-header h2 { margin: 0; font-size: 1.6em; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .card-body { padding: 30px; }
+
+        h3 { color: var(--accent-blue); border-right: 5px solid var(--accent-blue); padding-right: 15px; margin-top: 25px; }
+
+        /* המלצות */
+        .reviews-wrapper { position: relative; min-height: 250px; }
+        .reviews-set {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            position: absolute; width: 100%; opacity: 0; transition: 0.8s ease-in-out; pointer-events: none;
+        }
+        .reviews-set.active { opacity: 1; pointer-events: auto; position: relative; }
+        @media (max-width: 650px) { .reviews-set { grid-template-columns: 1fr; } }
+        .review-box { background: rgba(52, 152, 219, 0.1); padding: 20px; border-radius: 18px; border-right: 4px solid var(--accent-blue); }
+
+        /* וידאו */
+        video { width: 100%; max-width: 680px; border-radius: 18px; border: 1px solid var(--accent-blue); background: #000; margin: 20px 0; }
+
+        /* כפתורי פעולה ויצירת קשר */
+        .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; min-width: 140px; padding: 16px; border-radius: 12px; 
+            text-decoration: none; font-weight: bold; color: white; 
+            text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; 
+            transition: 0.3s; font-size: 0.95em;
+        }
+        .btn-whatsapp-action { background: #25d366; }
+        .btn-phone-action { background: #03a9f4; }
+        .btn-share-action { background: #607d8b; }
+        .btn-action:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .btn-linkedin { display: inline-flex; align-items: center; background: var(--linkedin-blue); color: white !important; padding: 12px 25px; border-radius: 50px; text-decoration: none !important; font-weight: bold; gap: 10px; margin: 15px auto; }
+
+        .form-group { position: relative; margin-bottom: 15px; }
+        .form-group i { position: absolute; right: 15px; top: 18px; color: var(--accent-blue); }
+        .form-input { width: 100%; padding: 16px 45px 16px 15px; border-radius: 12px; border: 1px solid rgba(52, 152, 219, 0.3); background: rgba(0,0,0,0.5); color: white; box-sizing: border-box; font-family: inherit; }
+        .btn-submit { width: 100%; padding: 18px; background: linear-gradient(135deg, #f39c12, #d35400); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: 1.1em; }
+        
+        /* מרפאות */
+        .clinic-box { background: rgba(255,255,255,0.05); padding: 22px; border-radius: 16px; border-right: 6px solid var(--accent-blue); margin-top: 20px; }
+        .btn-nav { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; margin-top: 15px; margin-left: 10px; font-size: 0.85em; }
+        .btn-waze { background: #33CCFF; }
+        .btn-google { background: #4285F4; }
+
+        ul { padding-right: 20px; list-style: none; }
+        li { margin-bottom: 10px; position: relative; }
+        li::before { content: "•"; color: var(--accent-blue); font-weight: bold; position: absolute; right: -20px; }
+
+        .floating-whatsapp { position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; }
+        footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.85em; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+<div class="page-background"></div>
+
+<div class="container articles-bar">
+    <a href="https://www.inn.co.il/news/543207" target="_blank" class="floating-article article-1"><i class="fas fa-newspaper"></i> ערוץ 7: 4 צנתורים ב-24 שעות ></a>
+    <a href="https://www.bhol.co.il/news/1480676" target="_blank" class="floating-article article-2"><i class="fas fa-heartbeat"></i> בחדרי חרדים: הצלחה בצנתור מפרצת ></a>
+    <a href="https://emeknews.co.il/%D7%9C%D7%90-%D7%99%D7%93%D7%A2%D7%AA%D7%99-%D7%A9%D7%9C%D7%A7%D7%99%D7%AA%D7%99-%D7%91%D7%A9%D7%91%D7%A5-%D7%A6%D7%A0%D7%AA%D7%95%D7%A8-%D7%9E%D7%95%D7%97-%D7%93%D7%97%D7%95%D7%A3-%D7%94%D7%A6/" target="_blank" class="floating-article article-3"><i class="fas fa-external-link-alt"></i> עמקניוז: הצלת חיים בשבץ דחוף ></a>
+</div>
+
+<header>
+    <img src="logo-brain.png" alt="ד"ר ערן מאירוביץ'" class="header-logo">
+    <h1>ד"ר ערן מאירוביץ'</h1>
+    <p>מומחה לנוירוכירורגיה וצנתורי מוח | מנהל היחידה לצנתורי מוח</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-user-md"></i> נעים להכיר</h2></div>
+        <div class="card-body">
+            <p>ד"ר ערן מאירוביץ' הינו מומחה לנוירוכירורגיה וצנתורי מוח, מנהל היחידה לצנתורי מוח במרכז הרפואי צפון (פדה-פוריה). בעל ניסיון עשיר בביצוע מאות פרוצדורות מורכבות לטיפול במחלות כלי דם במוח.</p>
+            <div style="text-align: center;">
+                <video controls poster="logo-brain.png"><source src="intro.mp4" type="video/mp4"></video>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://www.linkedin.com/in/eran-meirovich-83b320146/" target="_blank" class="btn-linkedin">
+                    <i class="fab fa-linkedin"></i> הפרופיל ב-LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-comments"></i> מטופלים מספרים</h2></div>
+        <div class="card-body">
+            <div class="reviews-wrapper">
+                <div class="reviews-set active">
+                    <div class="review-box">
+                        <div style="color:#f1c40f; margin-bottom:5px;">★★★★★</div>
+                        <p>"רופא מדהים ואנושי ברמות הכי גבוהות שיש. הציל את אמא שלי ומאז אנחנו אסירי תודה."</p>
+                        <strong>— ר. לוי</strong>
+                    </div>
+                    <div class="review-box">
+                        <div style="color:#f1c40f; margin-bottom:5px;">★★★★★</div>
+                        <p>"הגעתי לד"ר מאירוביץ' אחרי הרבה התלבטויות. הסביר הכל בסבלנות. הניתוח הצליח!"</p>
+                        <strong>— מ. כהן</strong>
+                    </div>
+                </div>
+                <div class="reviews-set">
+                    <div class="review-box">
+                        <div style="color:#f1c40f; margin-bottom:5px;">★★★★★</div>
+                        <p>"מקצוען אמיתי. יסודי מאוד, לא משאיר שום דבר ליד הגורל. ממליצה בחום."</p>
+                        <strong>— א. אברהם</strong>
+                    </div>
+                    <div class="review-box">
+                        <div style="color:#f1c40f; margin-bottom:5px;">★★★★★</div>
+                        <p>"ידי זהב ולב רחב. הרגשתי בידיים הכי טובות שיש מהרגע הראשון."</p>
+                        <strong>— ד. גולן</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-graduation-cap"></i> אודות וניסיון מקצועי</h2></div>
+        <div class="card-body">
+            <h3>השכלה אקדמית</h3>
+            <ul>
+                <li>בוגר לימודי רפואה באוניברסיטת Semmelweis בבודפשט בהצטיינות יתרה.</li>
+                <li>מרצה ומדריך קליני בפקולטה לרפואה של אוניברסיטת בר-אילן.</li>
+            </ul>
+            <h3>מסלול מקצועי</h3>
+            <ul>
+                <li>מנהל היחידה לצנתורי מוח בבית חולים צפון (פדה-פוריה) משנת 2021.</li>
+                <li>מנתח בכיר ב"הרצליה מדיקל סנטר" (HMC).</li>
+                <li>תת-התמחות בצנתורי מוח בבית החולים Gui de Chauliac בצרפת.</li>
+                <li>התמחות בנוירוכירורגיה במרכז הרפואי רמב"ם.</li>
+            </ul>
+            <h3>תחומי מומחיות</h3>
+            <ul>
+                <li>צנתורי מוח למפרצות, שבץ ומומי כלי דם (AVM/AVF).</li>
+                <li>טיפול צנתורי בהיצרות עורקי הצוואר והמוח.</li>
+                <li>אמבוליזציה לגידולים וטיפול בשברים בחוליות (קיפופלסטיה).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-laptop-medical"></i> הדמיות טיפוליות</h2></div>
+        <div class="card-body" style="text-align: center;">
+            <p><strong>טיפול במפרצות מוחיות:</strong></p>
+            <video controls><source src="aneurysm.mp4" type="video/mp4"></video>
+            <p><strong>טיפול בשבץ מוחי:</strong></p>
+            <video controls><source src="stroke.mp4" type="video/mp4"></video>
+            <p><strong>מומים וסקולריים:</strong></p>
+            <video controls><source src="vascular.mp4" type="video/mp4"></video>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-paper-plane"></i> קביעת תור ויצירת קשר</h2></div>
+        <div class="card-body">
+            <form action="https://formspree.io/f/xdawvgne" method="POST">
+                <div class="form-group"><i class="fas fa-user"></i><input type="text" name="name" class="form-input" placeholder="שם מלא *" required></div>
+                <div class="form-group"><i class="fas fa-phone"></i><input type="tel" name="phone" class="form-input" placeholder="טלפון ליצירת קשר *" required></div>
+                <div class="form-group"><i class="fas fa-comment-medical"></i><textarea name="message" class="form-input" style="height:100px; padding-right: 45px;" placeholder="כיצד נוכל לעזור?"></textarea></div>
+                <button type="submit" class="btn-submit">שלח בקשה לחזרה</button>
+            </form>
+            <div class="action-buttons">
+                <a href="https://wa.me/972505744649" target="_blank" class="btn-action btn-whatsapp-action"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="tel:+972505744649" class="btn-action btn-phone-action"><i class="fas fa-phone-alt"></i> חיוג ישיר</a>
+                <a href="#" onclick="window.print(); return false;" class="btn-action btn-share-action"><i class="fas fa-share-alt"></i> שתף אתר</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-hospital"></i> מרפאות ודרכי הגעה</h2></div>
+        <div class="card-body">
+            <div class="clinic-box">
+                <strong>הרצליה מדיקל סנטר (HMC)</strong>
+                <p><i class="fas fa-map-marker-alt" style="color:var(--accent-blue)"></i> שד' אלי לנדאו 7, הרצליה</p>
+                <a href="https://waze.com/ul?q=Herzliya+Medical+Center" target="_blank" class="btn-nav btn-waze"><i class="fab fa-waze"></i> Waze</a>
+                <a href="https://maps.google.com/?q=Herzliya+Medical+Center" target="_blank" class="btn-nav btn-google"><i class="fas fa-map-marked-alt"></i> Google Maps</a>
+            </div>
+            <div class="clinic-box">
+                <strong>מגן רפואת מומחים - רמת ישי</strong>
+                <p><i class="fas fa-map-marker-alt" style="color:var(--accent-blue)"></i> הדקל 1, רמת ישי</p>
+                <a href="https://waze.com/ul?q=מגן+רפואת+מומחים+רמת+ישי" target="_blank" class="btn-nav btn-waze"><i class="fab fa-waze"></i> Waze</a>
+                <a href="https://maps.google.com/?q=מגן+רפואת+מומחים+רמת+ישי" target="_blank" class="btn-nav btn-google"><i class="fas fa-map-marked-alt"></i> Google Maps</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a href="https://wa.me/972505744649" class="floating-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<footer>© 2026 ד"ר ערן מאירוביץ' | המידע אינו מהווה תחליף לייעוץ רפואי</footer>
+
+<script>
+    let sets = document.querySelectorAll('.reviews-set');
+    let currentSet = 0;
+    setInterval(() => {
+        sets[currentSet].classList.remove('active');
+        currentSet = (currentSet + 1) % sets.length;
+        sets[currentSet].classList.add('active');
+    }, 4500);
+</script>
+</body>
+</html>

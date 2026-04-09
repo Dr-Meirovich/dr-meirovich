@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>צנתור מוח אבחנתי - מצגת למטופל</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --secondary-blue: #005bb5;
+            --accent-teal: #008080;
+            --light-bg: #f4f7f9;
+            --text-dark: #2c3e50;
+            --text-muted: #5d6d7e;
+            --white: #ffffff;
+            --gemini-purple: #8e44ad;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            background-color: #e9ecef;
+            margin: 0;
+            font-family: 'Assistant', 'Heebo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Presentation Container */
+        .presentation-wrapper {
+            width: 1100px;
+            height: 650px;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 600px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 60px;
+            display: none; 
+            flex-direction: column;
+            transition: opacity 0.4s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Decorative background element */
+        .slide::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0,128,128,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        /* Typography */
+        h1 { font-size: 56px; color: var(--primary-blue); margin: 0; }
+        h2.slide-header {
+            font-size: 38px;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent-teal);
+            display: inline-block;
+            z-index: 1;
+        }
+
+        p, li { font-size: 22px; color: var(--text-dark); line-height: 1.6; z-index: 1; }
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li {
+            margin-bottom: 18px;
+            position: relative;
+            padding-right: 40px;
+        }
+        li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            color: var(--accent-teal);
+        }
+
+        /* Layouts */
+        .centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Heebo';
+            font-size: 18px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover { background: var(--secondary-blue); }
+        .nav-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .gemini-btn {
+            background: linear-gradient(135deg, var(--accent-teal) 0%, var(--gemini-purple) 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Heebo';
+            font-size: 18px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+        }
+
+        .gemini-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+
+        .slide-indicator {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        /* Modal / Chat Styles */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-content {
+            background: white;
+            width: 500px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent-teal); }
+
+        .send-btn {
+            background: var(--accent-teal);
+            color: white;
+            border: none;
+            width: 45px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .close-chat {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .ai-message {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 16px;
+            line-height: 1.5;
+            border-right: 4px solid var(--accent-teal);
+        }
+
+        /* Slide specific styles */
+        .info-card {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border-right: 6px solid var(--accent-teal);
+        }
+
+        .icon-box { text-align: center; }
+        .icon-box i { font-size: 60px; color: var(--accent-teal); margin-bottom: 20px; }
+
+        .step-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+        .step { text-align: center; flex: 1; padding: 0 10px; }
+        .step-num {
+            width: 50px; height: 50px; background: var(--primary-blue); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px; font-weight: bold; font-size: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-teal);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="presentation-wrapper">
+        
+        <!-- Slide 1 -->
+        <div class="slide active" id="slide-0">
+            <div class="centered">
+                <i class="fa-solid fa-brain" style="font-size: 80px; color: var(--accent-teal); margin-bottom: 20px;"></i>
+                <h1>צנתור מוח אבחנתי</h1>
+                <p style="font-size: 28px; color: var(--accent-teal); font-weight: 700;">מדריך אישי ומקצועי למטופל</p>
+                <p style="max-width: 600px; margin-top: 20px;">כל מה שצריך לדעת כדי להגיע רגועים ומיודעים לפעולה האבחנתית.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide" id="slide-1">
+            <h2 class="slide-header">מהי הבדיקה?</h2>
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>דיוק ללא פשרות</h3>
+                    <p>צנתור מוח הוא הסטנדרט המוביל להדמיה של כלי הדם במוח, המאפשר לראות פרטים שלא ניתן לראות בדרכים אחרות.</p>
+                </div>
+                <ul>
+                    <li>זיהוי מפרצות, חסימות ומומים.</li>
+                    <li>תמונה חיה ובזמן אמת.</li>
+                    <li>הבסיס לתכנון המשך טיפול.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide" id="slide-2">
+            <h2 class="slide-header">מהלך הפעולה</h2>
+            <div class="step-row">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>גישה</h3>
+                    <p>החדרת צנתר דקיק דרך המפשעה או שורש כף היד.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>ניווט</h3>
+                    <p>הולכת הצנתר בעדינות תחת שיקוף רנטגן עד לאזור הצוואר.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>הדמיה</h3>
+                    <p>הזרקת חומר ניגוד על מנת לראות את כלי הדם בצוואר ובמוח.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide" id="slide-3">
+            <h2 class="slide-header">מה תרגישו?</h2>
+            <div class="grid-2">
+                <div class="icon-box">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <h3>מינימום אי-נוחות</h3>
+                    <p>הפעולה אינה כואבת כי בתוך כלי הדם אין תחושה. הפעולה מבוצעת באלחוש מקומי.</p>
+                </div>
+                <div class="icon-box">
+                    <i class="fa-solid fa-temperature-full"></i>
+                    <h3>גל חום קצר</h3>
+                    <p>בעת הזרקת היוד, ייתכן ותרגישו חום בראש למספר שניות. זה טבעי לחלוטין.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide" id="slide-4">
+            <h2 class="slide-header">לאחר הפעולה</h2>
+            <div class="info-card">
+                <ul>
+                    <li><strong>מנוחה:</strong> שכיבה של מספר שעות בהשגחה צמודה.</li>
+                    <li><strong>התאוששות:</strong> ניטור על ידי הצוות הרפואי.</li>
+                    <li><strong>חזרה לשגרה:</strong> שחרור ברוב המקרים עוד באותו היום.</li>
+                </ul>
+            </div>
+            <p style="margin-top: 30px; text-align: center;">אנחנו דואגים שתקומו מהמיטה רק כשאתם מוכנים ובטוחים.</p>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide" id="slide-5">
+            <h2 class="slide-header">הצוות המטפל</h2>
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3 style="color: var(--primary-blue);"><i class="fa-solid fa-user-doctor"></i> רופאים וטכנאים</h3>
+                    <p>רופאים מומחים וטכנאי רנטגן המפעילים את המכשור המתקדם ביותר.</p>
+                </div>
+                <div class="info-card">
+                    <h3 style="color: var(--primary-blue);"><i class="fa-solid fa-user-nurse"></i> אחיות חדר צנתורים</h3>
+                    <p>אחיות מוסמכות המלוות אתכם אישית לאורך כל זמן השהות ביחידה.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide" id="slide-6">
+            <div class="centered">
+                <i class="fa-solid fa-heart-pulse" style="font-size: 80px; color: var(--accent-teal); margin-bottom: 20px;"></i>
+                <h1>אתם בידיים טובות</h1>
+                <p style="font-size: 24px;">הצוות שלנו כאן כדי להבטיח אבחון מדויק ובטיחות מקסימלית.</p>
+                <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; color: var(--text-muted);">
+                    מוכנים לצנתור? נשמח לענות על כל שאלה נוספת.
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <div class="nav-group">
+                <button class="nav-btn" id="nextBtn">הבא <i class="fa-solid fa-arrow-left"></i></button>
+                <div class="slide-indicator" id="indicator">1 / 7</div>
+                <button class="nav-btn" id="prevBtn" disabled><i class="fa-solid fa-arrow-right"></i> הקודם</button>
+            </div>
+            
+            <button class="gemini-btn" id="openChat">
+                ✨ שאל שאלה אישית על הפעולה
+            </button>
+        </div>
+
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-content">
+            <button class="close-chat" id="closeChat">&times;</button>
+            <div class="chat-header">
+                <i class="fa-solid fa-sparkles"></i> עוזר אישי חכם ✨
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="ai-message">שלום, אני כאן כדי להשיב על כל שאלה שיש לך לגבי צנתור המוח האבחנתי. מה תרצה לדעת?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="הקלד שאלה כאן (למשל: האם זה כואב?)...">
+                <button class="send-btn" id="sendQuery"><i class="fa-solid fa-paper-plane-rtl"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API key setup
+        const apiKey = ""; 
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicator = document.getElementById('indicator');
+        const openChat = document.getElementById('openChat');
+        const closeChat = document.getElementById('closeChat');
+        const chatModal = document.getElementById('chatModal');
+        const sendQuery = document.getElementById('sendQuery');
+        const userInput = document.getElementById('userInput');
+        const chatBody = document.getElementById('chatBody');
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            indicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            
+            prevBtn.disabled = currentSlide === 0;
+            if (currentSlide === slides.length - 1) {
+                nextBtn.innerHTML = 'התחלה מחדש <i class="fa-solid fa-rotate-right"></i>';
+            } else {
+                nextBtn.innerHTML = 'הבא <i class="fa-solid fa-arrow-left"></i>';
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+            } else {
+                currentSlide = 0;
+            }
+            updateSlide();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        // Gemini AI Integration
+        openChat.addEventListener('click', () => {
+            chatModal.style.display = 'flex';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatModal.style.display = 'none';
+        });
+
+        async function callGemini(query) {
+            const systemPrompt = `אתה עוזר רפואי וירטואלי באתר של מצנתר מוח. תפקידך להשיב על שאלות מטופלים לגבי צנתור מוח אבחנתי בצורה מקצועית, מרגיעה וברורה.
+            השתמש במידע הבא כבסיס:
+            - הצנתור הוא הסטנדרט המוביל לאבחון (Gold Standard).
+            - הפעולה אינה כואבת כי אין עצבי תחושה בכלי הדם.
+            - משתמשים באלחוש מקומי וטשטוש קל.
+            - תחושת חום בראש בזמן הזרקת היוד היא נורמלית.
+            - הצוות כולל רופא מצנתר, טכנאי רנטגן ואחיות חדר צנתורים.
+            תמיד תהיה אמפתי ומרגיע. אל תתן עצות רפואיות ספציפיות אלא הסברים על הפעולה עצמה. השימוש בשפה העברית בלבד.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            let retries = 0;
+            const maxRetries = 5;
+            
+            while (retries < maxRetries) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: query }] }],
+                            systemInstruction: { parts: [{ text: systemPrompt }] }
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "מצטער, חלה שגיאה בעיבוד השאלה. נסה שוב מאוחר יותר.";
+                } catch (error) {
+                    retries++;
+                    const delay = Math.pow(2, retries) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+            return "חלה שגיאת תקשורת. הצוות הרפואי ישמח לענות על שאלתך באופן אישי במרפאה.";
+        }
+
+        async function handleSend() {
+            const query = userInput.value.trim();
+            if (!query) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.style.cssText = "margin: 10px 0; font-weight: bold; text-align: left; font-size: 14px; color: var(--secondary-blue);";
+            userDiv.textContent = query;
+            chatBody.appendChild(userDiv);
+            
+            userInput.value = "";
+            
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = "ai-message";
+            loadingDiv.innerHTML = '<span class="loading"></span> מעבד תשובה...';
+            chatBody.appendChild(loadingDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            const aiResponse = await callGemini(query);
+            loadingDiv.innerHTML = aiResponse;
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        sendQuery.addEventListener('click', handleSend);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+
+    </script>
+</body>
+</html>

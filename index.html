@@ -47,9 +47,8 @@
 
         .container { max-width: 900px; margin: 20px auto; padding: 15px; position: relative; }
 
-        /* כתבות צפות - תצוגה חכמה */
+        /* כתבות צפות */
         .articles-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-        
         .floating-article {
             background: rgba(52, 152, 219, 0.15); backdrop-filter: blur(12px);
             border: 1px solid var(--accent-blue); padding: 14px; border-radius: 12px;
@@ -57,7 +56,6 @@
             display: flex; align-items: center; gap: 10px; transition: 0.3s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-
         @media (min-width: 1200px) {
             .articles-bar { display: block; }
             .floating-article { position: fixed; width: 210px; animation: float 5s infinite ease-in-out; }
@@ -76,9 +74,33 @@
         .card-header h2 { margin: 0; font-size: 1.6em; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .card-body { padding: 30px; }
 
-        h3 { color: var(--accent-blue); border-right: 5px solid var(--accent-blue); padding-right: 15px; margin-top: 25px; }
+        /* נגן המצגות (Overlay) */
+        .info-center-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .info-center-grid { grid-template-columns: 1fr; } }
+        .info-btn { 
+            background: rgba(52, 152, 219, 0.15); border: 1px solid var(--accent-blue); 
+            color: white; padding: 20px; border-radius: 15px; cursor: pointer;
+            display: flex; align-items: center; gap: 12px; transition: 0.3s; font-weight: bold;
+        }
+        .info-btn:hover { background: var(--accent-blue); transform: scale(1.02); }
 
-        /* המלצות */
+        .presentation-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 2000; flex-direction: column;
+        }
+        .presentation-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 25px; background: var(--primary-dark); border-bottom: 1px solid var(--accent-blue);
+        }
+        .close-pres { font-size: 24px; color: white; cursor: pointer; background: none; border: none; }
+        .presentation-content { flex: 1; width: 100%; border: none; }
+
+        /* עיצוב רשימות ותוכן מקורי */
+        h3 { color: var(--accent-blue); border-right: 5px solid var(--accent-blue); padding-right: 15px; margin-top: 25px; }
+        ul { padding-right: 20px; list-style: none; }
+        li { margin-bottom: 10px; position: relative; }
+        li::before { content: "•"; color: var(--accent-blue); font-weight: bold; position: absolute; right: -20px; }
+
         .reviews-wrapper { position: relative; min-height: 250px; }
         .reviews-set {
             display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
@@ -88,38 +110,21 @@
         @media (max-width: 650px) { .reviews-set { grid-template-columns: 1fr; } }
         .review-box { background: rgba(52, 152, 219, 0.1); padding: 20px; border-radius: 18px; border-right: 4px solid var(--accent-blue); }
 
-        /* וידאו */
         video { width: 100%; max-width: 680px; border-radius: 18px; border: 1px solid var(--accent-blue); background: #000; margin: 20px 0; }
-
-        /* כפתורי פעולה ויצירת קשר */
         .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-        .btn-action { 
-            flex: 1; min-width: 140px; padding: 16px; border-radius: 12px; 
-            text-decoration: none; font-weight: bold; color: white; 
-            text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; 
-            transition: 0.3s; font-size: 0.95em;
-        }
+        .btn-action { flex: 1; min-width: 140px; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; color: white; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; font-size: 0.95em; }
         .btn-whatsapp-action { background: #25d366; }
         .btn-phone-action { background: #03a9f4; }
         .btn-share-action { background: #607d8b; }
-        .btn-action:hover { transform: translateY(-3px); filter: brightness(1.1); }
-
         .btn-linkedin { display: inline-flex; align-items: center; background: var(--linkedin-blue); color: white !important; padding: 12px 25px; border-radius: 50px; text-decoration: none !important; font-weight: bold; gap: 10px; margin: 15px auto; }
-
-        .form-group { position: relative; margin-bottom: 15px; }
-        .form-group i { position: absolute; right: 15px; top: 18px; color: var(--accent-blue); }
-        .form-input { width: 100%; padding: 16px 45px 16px 15px; border-radius: 12px; border: 1px solid rgba(52, 152, 219, 0.3); background: rgba(0,0,0,0.5); color: white; box-sizing: border-box; font-family: inherit; }
+        
+        .form-input { width: 100%; padding: 16px 45px 16px 15px; border-radius: 12px; border: 1px solid rgba(52, 152, 219, 0.3); background: rgba(0,0,0,0.5); color: white; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; }
         .btn-submit { width: 100%; padding: 18px; background: linear-gradient(135deg, #f39c12, #d35400); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: 1.1em; }
         
-        /* מרפאות */
         .clinic-box { background: rgba(255,255,255,0.05); padding: 22px; border-radius: 16px; border-right: 6px solid var(--accent-blue); margin-top: 20px; }
         .btn-nav { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; margin-top: 15px; margin-left: 10px; font-size: 0.85em; }
         .btn-waze { background: #33CCFF; }
         .btn-google { background: #4285F4; }
-
-        ul { padding-right: 20px; list-style: none; }
-        li { margin-bottom: 10px; position: relative; }
-        li::before { content: "•"; color: var(--accent-blue); font-weight: bold; position: absolute; right: -20px; }
 
         .floating-whatsapp { position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; }
         footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.85em; border-top: 1px solid #222; }
@@ -128,6 +133,14 @@
 <body>
 
 <div class="page-background"></div>
+
+<div id="presOverlay" class="presentation-overlay">
+    <div class="presentation-header">
+        <span id="presTitle" style="font-weight: bold;">מצגת מידע</span>
+        <button class="close-pres" onclick="closePresentation()"><i class="fas fa-times"></i> סגור</button>
+    </div>
+    <iframe id="presIframe" class="presentation-content" src=""></iframe>
+</div>
 
 <div class="container articles-bar">
     <a href="https://www.inn.co.il/news/543207" target="_blank" class="floating-article article-1"><i class="fas fa-newspaper"></i> ערוץ 7: 4 צנתורים ב-24 שעות ></a>
@@ -154,6 +167,19 @@
                 <a href="https://www.linkedin.com/in/eran-meirovich-83b320146/" target="_blank" class="btn-linkedin">
                     <i class="fab fa-linkedin"></i> הפרופיל ב-LinkedIn
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-book-medical"></i> מרכז מידע למטופל</h2></div>
+        <div class="card-body">
+            <p>בחרו נושא לצפייה במצגת הסבר מלאה הכוללת אפשרות לדפדוף ולשאילת שאלות:</p>
+            <div class="info-center-grid">
+                <div class="info-btn" onclick="openPresentation('aneurysm.html', 'צנתור מפרצת מוחית')"><i class="fas fa-brain"></i> צנתור מפרצת מוחית</div>
+                <div class="info-btn" onclick="openPresentation('carotid.html', 'סטנט בעורק התרדמה')"><i class="fas fa-stethoscope"></i> סטנט בעורק התרדמה</div>
+                <div class="info-btn" onclick="openPresentation('diagnostic.html', 'צנתור מוח אבחנתי')"><i class="fas fa-microscope"></i> צנתור מוח אבחנתי</div>
+                <div class="info-btn" onclick="openPresentation('MMA.html', 'טיפול MMA לדמם כרוני')"><i class="fas fa-shield-virus"></i> טיפול MMA לדמם כרוני</div>
             </div>
         </div>
     </div>
@@ -202,20 +228,20 @@
             <ul>
                 <li>מנהל היחידה לצנתורי מוח בבית חולים צפון (פדה-פוריה) משנת 2021.</li>
                 <li>מנתח בכיר ב"הרצליה מדיקל סנטר" (HMC).</li>
-                <li>תת-התמחות בצנתורי מוח בבית החולים Gui de Chauliac בצרפת.</li>
+                <li>תת-התמחות בצנתורי מוח בבית החולים Gui de Chauliac בצרפת (אחד המרכזים המובילים בעולם).</li>
                 <li>התמחות בנוירוכירורגיה במרכז הרפואי רמב"ם.</li>
             </ul>
             <h3>תחומי מומחיות</h3>
             <ul>
-                <li>צנתורי מוח למפרצות, שבץ ומומי כלי דם (AVM/AVF).</li>
-                <li>טיפול צנתורי בהיצרות עורקי הצוואר והמוח.</li>
+                <li>צנתורי מוח מורכבים למפרצות מוחיות, שבץ מוחי ומומי כלי דם (AVM/AVF).</li>
+                <li>טיפול צנתורי (סטנטים) בהיצרות עורקי הצוואר והמוח.</li>
                 <li>אמבוליזציה לגידולים וטיפול בשברים בחוליות (קיפופלסטיה).</li>
             </ul>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header"><h2><i class="fas fa-laptop-medical"></i> הדמיות טיפוליות</h2></div>
+        <div class="card-header"><h2><i class="fas fa-laptop-medical"></i> הדמיות טיפולית</h2></div>
         <div class="card-body" style="text-align: center;">
             <p><strong>טיפול במפרצות מוחיות:</strong></p>
             <video controls><source src="aneurysm.mp4" type="video/mp4"></video>
@@ -230,9 +256,9 @@
         <div class="card-header"><h2><i class="fas fa-paper-plane"></i> קביעת תור ויצירת קשר</h2></div>
         <div class="card-body">
             <form action="https://formspree.io/f/xdawvgne" method="POST">
-                <div class="form-group"><i class="fas fa-user"></i><input type="text" name="name" class="form-input" placeholder="שם מלא *" required></div>
-                <div class="form-group"><i class="fas fa-phone"></i><input type="tel" name="phone" class="form-input" placeholder="טלפון ליצירת קשר *" required></div>
-                <div class="form-group"><i class="fas fa-comment-medical"></i><textarea name="message" class="form-input" style="height:100px; padding-right: 45px;" placeholder="כיצד נוכל לעזור?"></textarea></div>
+                <input type="text" name="name" class="form-input" placeholder="שם מלא *" required>
+                <input type="tel" name="phone" class="form-input" placeholder="טלפון ליצירת קשר *" required>
+                <textarea name="message" class="form-input" style="height:100px;" placeholder="כיצד נוכל לעזור?"></textarea>
                 <button type="submit" class="btn-submit">שלח בקשה לחזרה</button>
             </form>
             <div class="action-buttons">
@@ -268,13 +294,30 @@
 <footer>© 2026 ד"ר ערן מאירוביץ' | המידע אינו מהווה תחליף לייעוץ רפואי</footer>
 
 <script>
+    // נגן המצגות במסך מלא
+    function openPresentation(url, title) {
+        document.getElementById('presIframe').src = url;
+        document.getElementById('presTitle').innerText = title;
+        document.getElementById('presOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // נעל גלילה באתר
+    }
+
+    function closePresentation() {
+        document.getElementById('presOverlay').style.display = 'none';
+        document.getElementById('presIframe').src = '';
+        document.body.style.overflow = 'auto'; // החזר גלילה
+    }
+
+    // מנגנון המלצות (מקורי)
     let sets = document.querySelectorAll('.reviews-set');
     let currentSet = 0;
-    setInterval(() => {
-        sets[currentSet].classList.remove('active');
-        currentSet = (currentSet + 1) % sets.length;
-        sets[currentSet].classList.add('active');
-    }, 4500);
+    if(sets.length > 0) {
+        setInterval(() => {
+            sets[currentSet].classList.remove('active');
+            currentSet = (currentSet + 1) % sets.length;
+            sets[currentSet].classList.add('active');
+        }, 4500);
+    }
 </script>
 </body>
 </html>

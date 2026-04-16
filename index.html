@@ -47,7 +47,6 @@
 
         .container { max-width: 900px; margin: 20px auto; padding: 15px; position: relative; }
 
-        /* כתבות צפות */
         .articles-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
         .floating-article {
             background: rgba(52, 152, 219, 0.15); backdrop-filter: blur(12px);
@@ -74,9 +73,18 @@
         .card-header h2 { margin: 0; font-size: 1.6em; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .card-body { padding: 30px; }
 
-        /* נגן המצגות (Overlay) */
-        .info-center-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media (max-width: 600px) { .info-center-grid { grid-template-columns: 1fr; } }
+        .lang-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; }
+        .tab-btn { 
+            background: rgba(255,255,255,0.1); border: 1px solid var(--accent-blue); 
+            color: white; padding: 10px 25px; border-radius: 25px; cursor: pointer; transition: 0.3s;
+            font-weight: bold;
+        }
+        .tab-btn.active { background: var(--accent-blue); box-shadow: 0 0 15px rgba(52, 152, 219, 0.5); }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .info-grid.hidden { display: none; }
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+
         .info-btn { 
             background: rgba(52, 152, 219, 0.15); border: 1px solid var(--accent-blue); 
             color: white; padding: 20px; border-radius: 15px; cursor: pointer;
@@ -95,7 +103,6 @@
         .close-pres { font-size: 24px; color: white; cursor: pointer; background: none; border: none; }
         .presentation-content { flex: 1; width: 100%; border: none; }
 
-        /* עיצוב רשימות ותוכן מקורי */
         h3 { color: var(--accent-blue); border-right: 5px solid var(--accent-blue); padding-right: 15px; margin-top: 25px; }
         ul { padding-right: 20px; list-style: none; }
         li { margin-bottom: 10px; position: relative; }
@@ -174,12 +181,23 @@
     <div class="card">
         <div class="card-header"><h2><i class="fas fa-book-medical"></i> מרכז מידע למטופל</h2></div>
         <div class="card-body">
-            <p>בחרו נושא לצפייה במצגת הסבר מלאה הכוללת אפשרות לדפדוף ולשאילת שאלות:</p>
-            <div class="info-center-grid">
+            <div class="lang-tabs">
+                <button id="btn-he" class="tab-btn active" onclick="switchLang('he')">עברית</button>
+                <button id="btn-ar" class="tab-btn" onclick="switchLang('ar')">العربية</button>
+            </div>
+
+            <div id="grid-he" class="info-grid">
                 <div class="info-btn" onclick="openPresentation('aneurysm.html', 'צנתור מפרצת מוחית')"><i class="fas fa-brain"></i> צנתור מפרצת מוחית</div>
                 <div class="info-btn" onclick="openPresentation('carotid.html', 'סטנט בעורק התרדמה')"><i class="fas fa-stethoscope"></i> סטנט בעורק התרדמה</div>
                 <div class="info-btn" onclick="openPresentation('diagnostic.html', 'צנתור מוח אבחנתי')"><i class="fas fa-microscope"></i> צנתור מוח אבחנתי</div>
                 <div class="info-btn" onclick="openPresentation('MMA.html', 'טיפול MMA לדמם כרוני')"><i class="fas fa-shield-virus"></i> טיפול MMA לדמם כרוני</div>
+            </div>
+
+            <div id="grid-ar" class="info-grid hidden" dir="rtl">
+                <div class="info-btn" onclick="openPresentation('aneurysmarabic.html', 'علاج تمدد الأوعية الدموية')"><i class="fas fa-brain"></i> علاج تمدد الأوعية الدموية</div>
+                <div class="info-btn" onclick="openPresentation('carotidarabic.html', 'دعامة الشريان السباتي')"><i class="fas fa-stethoscope"></i> دعامة الشريان السباتي</div>
+                <div class="info-btn" onclick="openPresentation('diagnosticarabic.html', 'قسطرة الدماغ التشخيصية')"><i class="fas fa-microscope"></i> قسطرة الدماغ التشخيصية</div>
+                <div class="info-btn" onclick="openPresentation('MMAarabic.html', 'علاج النزيف المزמן MMA')"><i class="fas fa-shield-virus"></i> علاج النزيف المزمن (MMA)</div>
             </div>
         </div>
     </div>
@@ -294,21 +312,36 @@
 <footer>© 2026 ד"ר ערן מאירוביץ' | המידע אינו מהווה תחליף לייעוץ רפואי</footer>
 
 <script>
-    // נגן המצגות במסך מלא
+    // נגן המצגות
     function openPresentation(url, title) {
         document.getElementById('presIframe').src = url;
         document.getElementById('presTitle').innerText = title;
         document.getElementById('presOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // נעל גלילה באתר
+        document.body.style.overflow = 'hidden';
     }
 
     function closePresentation() {
         document.getElementById('presOverlay').style.display = 'none';
         document.getElementById('presIframe').src = '';
-        document.body.style.overflow = 'auto'; // החזר גלילה
+        document.body.style.overflow = 'auto';
     }
 
-    // מנגנון המלצות (מקורי)
+    // החלפת שפה במצגות
+    function switchLang(lang) {
+        if(lang === 'he') {
+            document.getElementById('grid-he').classList.remove('hidden');
+            document.getElementById('grid-ar').classList.add('hidden');
+            document.getElementById('btn-he').classList.add('active');
+            document.getElementById('btn-ar').classList.remove('active');
+        } else {
+            document.getElementById('grid-he').classList.add('hidden');
+            document.getElementById('grid-ar').classList.remove('hidden');
+            document.getElementById('btn-he').classList.remove('active');
+            document.getElementById('btn-ar').classList.add('active');
+        }
+    }
+
+    // מנגנון המלצות מתחלפות
     let sets = document.querySelectorAll('.reviews-set');
     let currentSet = 0;
     if(sets.length > 0) {

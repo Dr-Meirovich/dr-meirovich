@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>علاج النزيف المزمن (MMA)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #8e1b1b; --accent: #3498db; --white: #ffffff; --text: #2c3e50; }
+        * { box-sizing: border-box; }
+        body { background: #fdfdfd; font-family: 'Cairo', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .wrapper { width: 100%; max-width: 1000px; position: relative; }
+        .slide { width: 100%; min-height: 550px; background: var(--white); border-radius: 16px; padding: 60px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); flex-direction: column; justify-content: center; border-right: 10px solid var(--primary); }
+        .slide.active { display: flex; }
+        h1 { color: var(--primary); font-size: 42px; text-align: center; }
+        h2 { color: var(--accent); font-size: 32px; border-bottom: 3px solid var(--primary); display: inline-block; margin-bottom: 30px; }
+        p, li { font-size: 24px; line-height: 1.6; color: var(--text); }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 20px; padding-right: 45px; position: relative; }
+        li::before { content: "\f058"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 0; color: var(--primary); }
+        .controls { width: 100%; max-width: 1000px; margin-top: 25px; display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 15px 30px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .btn { padding: 12px 25px; border-radius: 30px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .btn-ai { background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: white; }
+        
+        .chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .chat-content { background: white; width: 500px; border-radius: 20px; padding: 30px; position: relative; }
+        .chat-body { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .ai-message { background: #f0f7ff; padding: 15px; border-radius: 15px; border-right: 4px solid #3498db; margin-bottom: 10px; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,.1); border-radius: 50%; border-top-color: #3498db; animation: spin 1s infinite linear; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="slide active">
+            <div style="text-align:center;">
+                <i class="fa-solid fa-droplet-slash" style="font-size: 80px; color: var(--primary); margin-bottom: 20px;"></i>
+                <h1>علاج النزيف المزمن بالقسطرة (MMA)</h1>
+                <p style="font-size: 28px; color: var(--accent); font-weight: bold;">حل ذكي بدون عملية جراحية كبيرة</p>
+                <p>بنسكر "الحنفية" اللي بتغذي النزيف عشان نساعد الجسم يمتصه.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <h2>شو هو النزيف المزمن (cSDH)؟</h2>
+            <ul>
+                <li>هو تجمع دم قديم تحت غشاء الدماغ، بصير غالباً بعد وقعه بسيطة.</li>
+                <li>المشكلة إن النزيف ممكن يضل يكبر ويضغط على الدماغ.</li>
+                <li>عوض ما نفتح الجمجمة، بنقدر نسكر الشريان اللي بغذي هاد النزيف (MMA).</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h2>كيف بتصير القسطرة؟</h2>
+            <ul>
+                <li>بندخل أنبوب دقيق من عروق الإيد أو الفخذ.</li>
+                <li>بنستخدم "صمغ طبي" أو حبيبات صغيرة بتسكر الشريان المسؤول.</li>
+                <li>هيك بنمنع الدم يوصل لمنطقة النزيف، والنزيف ببلش ينشف لحاله.</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h2>ليش هاي الطريقة أحسن؟</h2>
+            <ul>
+                <li>بتقلل كتير من احتمالية رجوع النزيف مرة تانية.</li>
+                <li>ما في حاجة لعملية جراحية صعبة تحت تخدير طويل.</li>
+                <li>فترة التعافي أسرع وبتقدروا ترجعوا لبيتكم بسلامة.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="controls">
+        <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn" style="background:var(--primary); color:white;" onclick="moveSlide(-1)" id="prev" disabled>السابق</button>
+            <span id="ind">1 / 4</span>
+            <button class="btn" style="background:var(--primary); color:white;" onclick="moveSlide(1)" id="next">التالي</button>
+        </div>
+        <button class="btn btn-ai" onclick="toggleChat()">✨ اسأل مساعدنا الذكي</button>
+    </div>
+
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-content">
+            <button onclick="toggleChat()" style="position:absolute; left:15px; top:15px; border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
+            <h3 style="color:var(--primary)">مساعد علاج النزيف (MMA) ✨</h3>
+            <div class="chat-body" id="chatBody">
+                <div class="ai-message">أهلاً بك، أنا هنا للإجابة على أي سؤال بخصوص إغلاق شريان الـ MMA لعلاج النزيف المزمن. كيف أساعدك؟</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="userInput" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:10px;" placeholder="اكتب سؤالك هنا...">
+                <button onclick="askAI()" style="background:var(--accent); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "";
+        let cur = 0; const slides = document.querySelectorAll('.slide');
+        function moveSlide(n) {
+            slides[cur].classList.remove('active'); cur += n; slides[cur].classList.add('active');
+            document.getElementById('ind').innerText = `${cur+1} / 4`;
+            document.getElementById('prev').disabled = cur === 0;
+            document.getElementById('next').disabled = cur === 3;
+        }
+        function toggleChat() {
+            const m = document.getElementById('chatModal');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        async function askAI() {
+            const input = document.getElementById('userInput');
+            const query = input.value.trim();
+            if(!query) return;
+            const body = document.getElementById('chatBody');
+            const uDiv = document.createElement('div');
+            uDiv.style.margin = "10px 0"; uDiv.style.fontWeight = "bold"; uDiv.textContent = query;
+            body.appendChild(uDiv);
+            input.value = "";
+            const lDiv = document.createElement('div');
+            lDiv.className = "ai-message"; lDiv.innerHTML = '<span class="loading"></span> جاري الرد...';
+            body.appendChild(lDiv);
+            body.scrollTop = body.scrollHeight;
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        contents: [{parts: [{text: query}]}],
+                        systemInstruction: {parts: [{text: "أنت مساعد طبي خبير في علاج النزيف تحت الجافية المزمن عبر إغلاق شريان MMA بالقسطرة. أجب باللغة العربية. وضح كيف أن هذا الإجراء يمنع الحاجة لعمليات متكررة ويسد مصدر النزيف باستخدام الصمغ الطبي أو الحبيبات."}]}
+                    })
+                });
+                const data = await res.json();
+                lDiv.textContent = data.candidates[0].content.parts[0].text;
+            } catch(e) { lDiv.textContent = "عذراً، حدث خطأ."; }
+            body.scrollTop = body.scrollHeight;
+        }
+    </script>
+</body>
+</html>

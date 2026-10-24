@@ -119,6 +119,39 @@
         .review-box { background: rgba(52, 152, 219, 0.1); padding: 20px; border-radius: 18px; border-right: 4px solid var(--accent-blue); }
 
         video { width: 100%; max-width: 680px; border-radius: 18px; border: 1px solid var(--accent-blue); background: #000; margin: 20px 0; }
+
+        .reel-intro { text-align: center; margin: 0 0 22px; }
+        .reel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            align-items: start;
+        }
+        .reel-item { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+        .reel-title {
+            margin: 0 0 8px;
+            min-height: 2.9em;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.45;
+        }
+        .reel-player {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 9 / 16;
+            margin: 0;
+            display: block;
+            object-fit: contain;
+            background: #000;
+        }
+        @media (max-width: 720px) {
+            .reel-grid { grid-template-columns: 1fr; justify-items: center; }
+            .reel-item { width: min(100%, 340px); }
+            .reel-title { min-height: 0; }
+        }
         .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
         .btn-action { flex: 1; min-width: 140px; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; color: white; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; font-size: 0.95em; }
         .btn-whatsapp-action { background: #25d366; }
@@ -269,6 +302,33 @@
             <video controls><source src="stroke.mp4" type="video/mp4"></video>
             <p><strong>מומים וסקולריים:</strong></p>
             <video controls><source src="vascular.mp4" type="video/mp4"></video>
+        </div>
+    </div>
+
+    <div class="card" id="explainer-reels">
+        <div class="card-header"><h2><i class="fas fa-video"></i> סרטוני הסבר</h2></div>
+        <div class="card-body">
+            <p class="reel-intro">הסברים קצרים עם כתוביות בעברית על פעולות נפוצות בצנתור מוח.</p>
+            <div class="reel-grid">
+                <div class="reel-item">
+                    <p class="reel-title"><strong>סגירת מפרצת מוחית באמצעות סלילים</strong></p>
+                    <video class="reel-player" controls playsinline preload="metadata" width="1080" height="1920" aria-label="סגירת מפרצת מוחית באמצעות סלילים">
+                        <source src="reels/aneurysm_coiling_reel.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="reel-item">
+                    <p class="reel-title"><strong>צנתור עורק התרדמה והשתלת סטנט</strong></p>
+                    <video class="reel-player" controls playsinline preload="metadata" width="1080" height="1920" aria-label="צנתור עורק התרדמה והשתלת סטנט">
+                        <source src="reels/carotid_stenting_reel.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="reel-item">
+                    <p class="reel-title"><strong>צנתור מוח אבחנתי</strong></p>
+                    <video class="reel-player" controls playsinline preload="metadata" width="1080" height="1920" aria-label="צנתור מוח אבחנתי">
+                        <source src="reels/diagnostic_angiography_reel.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
         </div>
     </div>
 

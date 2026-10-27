@@ -199,16 +199,19 @@
             border: 1px solid rgba(251, 191, 36, 0.4); padding: 5px 11px;
             border-radius: 999px; text-decoration: none; white-space: nowrap; font-weight: 600;
         }
-        .reels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .reels-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; align-items: start; }
+        @media (max-width: 1100px) { .reels-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 860px) { .reels-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
         .reel-card {
             background: rgba(6, 16, 34, 0.85); border: 1px solid rgba(56, 189, 248, 0.32);
             border-radius: 22px; padding: 16px; text-align: center; display: flex; flex-direction: column;
         }
         .reel-title {
-            font-weight: 700; font-size: 1.05rem; color: #e0f2fe; margin: 0 0 12px;
+            font-weight: 700; font-size: 1.02rem; color: #e0f2fe; margin: 0 0 12px;
+            min-height: 4.8em; line-height: 1.35;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
+        @media (max-width: 860px) { .reel-title { min-height: 0; } }
         .reel-title i { color: var(--cyan); }
         .reel-video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.45); background: #000; }
         .sim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -438,6 +441,7 @@
                     <button class="info-btn-main" onclick="openPresentation('MMA.html', 'טיפול MMA לדמם כרוני')">
                         <i class="fas fa-shield-virus"></i> <span>טיפול MMA לדמם כרוני</span>
                     </button>
+                    <a href="#reel-mma" class="reel-jump-link"><i class="fas fa-play-circle"></i> לסרטון</a>
                 </div>
             </div>
 
@@ -489,6 +493,12 @@
                     <p class="reel-title"><i class="fas fa-microscope"></i> צנתור מוח אבחנתי</p>
                     <video class="reel-video" controls playsinline preload="metadata" poster="posters/reel_diagnostic_3d.jpg">
                         <source src="reels/diagnostic_angiography_reel.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div id="reel-mma" class="reel-card">
+                    <p class="reel-title"><i class="fas fa-shield-virus"></i> אמבוליזציה של עורק ה-MMA לטיפול בדימום תת-דוראלי כרוני</p>
+                    <video class="reel-video" controls playsinline preload="metadata" poster="posters/reel_mma_3d.jpg" aria-label="אמבוליזציה של עורק ה-MMA לטיפול בדימום תת-דוראלי כרוני">
+                        <source src="reels/mma_embolization_reel.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
